@@ -56,11 +56,12 @@ CONTAINER ID   IMAGE           COMMAND                CREATED              STATU
 
 ## overview of tokenfactory test contract
 
-The tokenfactorytest contract creates a tokenfactory denom on instantiate, and then persists all blockbeforesend and trackbeforesend msgs in state.
+The tokenfactorytest contract creates a tokenfactory denom on instantiate, and then persists all blockbeforesend and trackbeforesend msgs in state. The message interface is defined here: https://github.com/zodiac-protocol/tokenfactorytest/blob/master/packages/zodiac/src/tokenfactory_hooks.rs
+
 
 The sudo contract entry_point is implemented here: https://github.com/zodiac-protocol/tokenfactorytest/blob/9238f29dc2039514f1aa229db913202bd7661bf6/contracts/tokenfactory_hooks/src/contract.rs#L149
 
-And we can view the history of hook activations from this query msg: https://github.com/zodiac-protocol/tokenfactorytest/blob/8bc7cd581605660dd4f5931078bb2b5dd7d6568a/contracts/tokenfactory_hooks/src/contract.rs#LL186C9-L186C9
+And we can view the history of hook activations from this query msg: https://github.com/zodiac-protocol/tokenfactorytest/blob/8bc7cd581605660dd4f5931078bb2b5dd7d6568a/contracts/tokenfactory_hooks/src/contract.rs#L186
 
 Any permutation of mint/burn with the target address set/unset does not get picked up by the contract's sudo hook
 ```
