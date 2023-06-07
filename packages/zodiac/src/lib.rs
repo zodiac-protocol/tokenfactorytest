@@ -1,18 +1,7 @@
 #[allow(clippy::redundant_field_names)]
 
-//core
-pub mod factory;
-pub mod osmo_factory;
+
 pub mod math;
-pub mod osmo_bal_vault;
-pub mod osmo_bal_lockup_vault;
-pub mod osmo_vamm;
-pub mod flash_loan;
-
-//periphery
-pub mod fee_collector; //for osmo
-pub mod vault_incentives_v1;
-
 pub mod utils;
 pub mod tokenfactory_hooks;
 
