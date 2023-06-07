@@ -63,6 +63,8 @@ The sudo contract entry_point is implemented here: https://github.com/zodiac-pro
 
 And we can view the history of hook activations from this query msg: https://github.com/zodiac-protocol/tokenfactorytest/blob/8bc7cd581605660dd4f5931078bb2b5dd7d6568a/contracts/tokenfactory_hooks/src/contract.rs#L186
 
+
+
 Any permutation of mint/burn with the target address set/unset does not get picked up by the contract's sudo hook
 ```
 In [15]: %cpaste
