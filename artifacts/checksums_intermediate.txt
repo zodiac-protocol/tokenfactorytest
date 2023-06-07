@@ -1,0 +1,1 @@
+9b5861cccd643f005e15bd18c48baa87d67c8ddeb2b318d0b774b18741c9d64c  target/wasm32-unknown-unknown/release/tokenfactory_hooks.wasm

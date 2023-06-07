@@ -1,0 +1,1 @@
+8f9706ebc0961acaf8d44aacb1ebb11f3717242d122692a24084015e02f143e2  tokenfactory_hooks.wasm
