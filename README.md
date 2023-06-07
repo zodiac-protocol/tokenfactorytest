@@ -3,7 +3,7 @@
 ## localosmosis environment
 
 initial state of repo
-```
+```bash
 ubuntu@ip-172-31-21-69:~/repos/osmosis$ sudo rm -rf ~/.osmosisd-local
 ubuntu@ip-172-31-21-69:~/repos/osmosis$ git status
 On branch main
@@ -13,7 +13,7 @@ nothing to commit, working tree clean
 ```
 
 update max gas per tx from 25M to 120M
-```
+```bash
 ubuntu@ip-172-31-21-69:~/repos/osmosis$ git status
 On branch main
 Your branch is up to date with 'origin/main'.
@@ -41,12 +41,12 @@ index 641f027e1..c1d98cb2f 100644
  ```
 
 build docker image
-```
+```bash
 ubuntu@ip-172-31-21-69:~/repos/osmosis$ DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose -f tests/localosmosis/docker-compose.yml build
 ```
 
 spin-up localosmosis
-```
+```bash
 ubuntu@ip-172-31-21-69:~/repos/osmosis$ STATE="" docker-compose -f tests/localosmosis/docker-compose.yml up -d
 ubuntu@ip-172-31-21-69:~/repos/osmosis$ docker ps
 CONTAINER ID   IMAGE           COMMAND                CREATED              STATUS          PORTS                                                                                                                                                                                                           NAMES
