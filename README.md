@@ -3,7 +3,7 @@
 ## localosmosis environment
 
 initial state of repo
-```
+```bash
 ubuntu@ip-172-31-21-69:~/repos/osmosis$ sudo rm -rf ~/.osmosisd-local
 ubuntu@ip-172-31-21-69:~/repos/osmosis$ git status
 On branch main
@@ -13,7 +13,7 @@ nothing to commit, working tree clean
 ```
 
 update max gas per tx from 25M to 120M
-```
+```bash
 ubuntu@ip-172-31-21-69:~/repos/osmosis$ git status
 On branch main
 Your branch is up to date with 'origin/main'.
@@ -41,12 +41,12 @@ index 641f027e1..c1d98cb2f 100644
  ```
 
 build docker image
-```
+```bash
 ubuntu@ip-172-31-21-69:~/repos/osmosis$ DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose -f tests/localosmosis/docker-compose.yml build
 ```
 
 spin-up localosmosis
-```
+```bash
 ubuntu@ip-172-31-21-69:~/repos/osmosis$ STATE="" docker-compose -f tests/localosmosis/docker-compose.yml up -d
 ubuntu@ip-172-31-21-69:~/repos/osmosis$ docker ps
 CONTAINER ID   IMAGE           COMMAND                CREATED              STATUS          PORTS                                                                                                                                                                                                           NAMES
@@ -56,11 +56,15 @@ CONTAINER ID   IMAGE           COMMAND                CREATED              STATU
 
 ## overview of tokenfactory test contract
 
-The tokenfactorytest contract creates a tokenfactory denom on instantiate, and then persists all blockbeforesend and trackbeforesend msgs in state.
+The tokenfactorytest contract creates a tokenfactory denom on instantiate, and then persists all blockbeforesend and trackbeforesend msgs in state. The message interface is defined here: https://github.com/zodiac-protocol/tokenfactorytest/blob/master/packages/zodiac/src/tokenfactory_hooks.rs
+
 
 The sudo contract entry_point is implemented here: https://github.com/zodiac-protocol/tokenfactorytest/blob/9238f29dc2039514f1aa229db913202bd7661bf6/contracts/tokenfactory_hooks/src/contract.rs#L149
 
-And we can view the history of hook activations from this query msg: https://github.com/zodiac-protocol/tokenfactorytest/blob/8bc7cd581605660dd4f5931078bb2b5dd7d6568a/contracts/tokenfactory_hooks/src/contract.rs#LL186C9-L186C9
+And we can view the history of hook activations from this query msg: https://github.com/zodiac-protocol/tokenfactorytest/blob/8bc7cd581605660dd4f5931078bb2b5dd7d6568a/contracts/tokenfactory_hooks/src/contract.rs#L186
+
+<br>
+<br>
 
 Any permutation of mint/burn with the target address set/unset does not get picked up by the contract's sudo hook
 ```
