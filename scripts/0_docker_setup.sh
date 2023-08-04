@@ -1,0 +1,1 @@
+docker run -it -d -v /path/to/your/repos/dir:/repos --name pythong python:3.8-buster

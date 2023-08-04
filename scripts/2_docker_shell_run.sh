@@ -1,0 +1,1 @@
+docker exec -it pythong bash #opens bash shell in container; alternatively can call ipython for python repl

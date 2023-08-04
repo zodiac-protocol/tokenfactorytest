@@ -1,0 +1,1 @@
+docker exec -it pythong pip install -r /repos/tokenfactorytest/scripts/requirements.txt
