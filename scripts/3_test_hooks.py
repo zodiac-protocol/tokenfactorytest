@@ -30,32 +30,6 @@ from terra_proto.cosmos.base.abci.v1beta1 import TxResponse
 from terra_proto.cosmos.tx.signing.v1beta1 import SignMode
 from betterproto.lib.google.protobuf import Any
 
-from ecdsa import SECP256k1, SigningKey
-from ecdsa.util import sigencode_string_canoniz
-init_result = init_contract(tf_test_code_id, {}, osmo_wallet, osmo, "testdata")
-tf_testdata_address = init_result.logs[0].events_by_type["instantiate"]["_contract_address"][0]
-
-
-import proto.osmosis.tokenfactory.v1beta1 as tokenfactory
-import proto.cosmos.base.v1beta1 as cosmos
-import hashlib
-import pendulum
-
-m = hashlib.sha256()
-m.update(bytes(pendulum.now().to_iso8601_string(), "utf-8"))
-salt = m.hexdigest()[::-12]
-
-create_msg = tokenfactory.MsgCreateDenom(
-  sender=osmo_wallet.key.acc_address,cation for retail
-)
-
-stargate_msg("/osmosis.tokenfactory.v1beta1.MsgCreateDenom", create_msg, osmo_wallet, osmo)
-
-e
-import hashlib
-
-from google.protobuf.json_format import Parse, ParseDict
-
 import sys
 sys.path.append(os.path.join(os.path.dirname(__name__), '.'))
 
@@ -142,7 +116,7 @@ tf_testdata_address = init_result.logs[0].events_by_type["instantiate"]["_contra
 import proto.osmosis.tokenfactory.v1beta1 as tokenfactory
 import proto.cosmos.base.v1beta1 as cosmos
 import hashlib
-import pendulumtf_test_address
+import pendulum
 
 #denom name will be bitcoin + some random string
 m = hashlib.sha256()
