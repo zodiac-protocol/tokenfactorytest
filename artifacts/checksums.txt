@@ -1,1 +1,1 @@
-0ad87a32ac671ff58d310dbe949e135128ec379dc61c4abad641e7504b00c3fe  tokenfactory_hooks.wasm
+189defd4378475d54225fdfa53d98c0e306df475cc5a2e2af7c879bfacc2af4c  tokenfactory_hooks.wasm

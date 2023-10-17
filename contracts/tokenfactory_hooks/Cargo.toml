@@ -32,6 +32,6 @@ serde = { version = "1.0.103", default-features = false, features = ["derive"] }
 thiserror = { version = "1.0.20" }
 hex = "0.4"
 cw-asset = "2.2.0"
-osmosis-std = { git = "https://github.com/osmosis-labs/osmosis-rust.git", rev = "a139d47" }
+osmosis-std = { git = "https://github.com/osmosis-labs/osmosis-rust.git", rev = "dc1bfbd" }
 cosmos-sdk-proto = { version = "0.18.0", default-features = false, features = ["cosmwasm"] } # mio extra imports break everything
 prost = "0.11"

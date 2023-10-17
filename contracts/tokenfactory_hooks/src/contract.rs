@@ -11,6 +11,7 @@ use zodiac::utils::{compose_stargate_msg, parse_reply_data};
 use zodiac::tokenfactory_hooks::{InstantiateMsg, ExecuteMsg, QueryMsg, SudoMsg, MigrateMsg};
 use osmosis_std::types::osmosis::tokenfactory::v1beta1::{MsgCreateDenom, MsgCreateDenomResponse, MsgMint, MsgBurn, MsgSetBeforeSendHook,};
 use osmosis_std::types::cosmos::base::v1beta1::Coin as ProtoCoin;
+use osmosis_std::types::cosmos::auth::v1beta1::{QueryModuleAccountsRequest, QueryModuleAccountsResponse};
 use prost::Message as ProstMessage;
 
 use crate::state::{HISTORY, HistoryItem, DENOM};
@@ -207,6 +208,53 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
             };
         
             resp
+        },
+        QueryMsg::ModuleAccounts{ } => {
+            let resp = perform_stargate_query::<Empty>(
+                &deps,
+                &QueryModuleAccountsRequest{
+                },
+                String::from("/cosmos.auth.v1beta1.Query/ModuleAccounts")
+            );
+
+            resp
+
         }
     }
+}
+
+use prost::Message;
+use serde::{Deserialize, Serialize};
+
+#[allow(clippy::redundant_field_names)]
+pub fn compose_stargate_query<C>(msg: &impl Message, path: String) -> StdResult<QueryRequest<C>>{
+    let mut msg_bytes: Vec<u8> = vec![];
+    Message::encode(msg, &mut msg_bytes).map_err(|_| StdError::generic_err("Cannot encode proto to bytes"))?;
+
+    Ok(QueryRequest::<C>::Stargate{
+        path: path,
+        data: msg_bytes.into(),
+    })
+}
+
+pub fn perform_stargate_query<C>(deps: &Deps, msg: &impl Message, path: String) -> StdResult<Binary> 
+where 
+    C: Serialize
+{
+    let query = compose_stargate_query::<C>(msg, path)?;
+    let raw = to_vec(&query).map_err(|serialize_err| StdError::generic_err(format!("Serializing QueryRequest: {}", serialize_err)))?;
+
+    let resp: StdResult<Binary> = match deps.querier.raw_query(&raw) {
+        SystemResult::Err(system_err) => Err(StdError::generic_err(format!(
+            "Querier system error: {}",
+            system_err
+        ))),
+        SystemResult::Ok(ContractResult::Err(contract_err)) => Err(StdError::generic_err(format!(
+            "Querier contract error: {}",
+            contract_err
+        ))),
+        SystemResult::Ok(ContractResult::Ok(value)) => Ok(value),
+    };
+
+    resp
 }
