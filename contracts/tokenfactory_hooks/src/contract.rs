@@ -4,8 +4,9 @@ use cosmwasm_std::{
     to_binary, Binary, CosmosMsg, Deps, DepsMut, Env,
     MessageInfo, Reply, Response, StdError, StdResult, SubMsg, Uint128,
     WasmMsg, Decimal256, Uint256, Coin, Event, QueryRequest, SystemResult,
-    ContractResult, Empty, to_vec
+    ContractResult, Empty, to_vec, BalanceResponse, BankMsg, BankQuery
 };
+use cw_utils::must_pay;
 
 use zodiac::utils::{compose_stargate_msg, parse_reply_data};
 use zodiac::tokenfactory_hooks::{InstantiateMsg, ExecuteMsg, QueryMsg, SudoMsg, MigrateMsg};
@@ -67,7 +68,7 @@ pub fn reply(deps: DepsMut, env: Env, reply: Reply) -> StdResult<Response> {
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
-pub fn execute(deps: DepsMut, env: Env, _info: MessageInfo, msg: ExecuteMsg) -> StdResult<Response> {
+pub fn execute(deps: DepsMut, env: Env, info: MessageInfo, msg: ExecuteMsg) -> StdResult<Response> {
     match msg {
         ExecuteMsg::MintTo {
             address,
@@ -141,6 +142,48 @@ pub fn execute(deps: DepsMut, env: Env, _info: MessageInfo, msg: ExecuteMsg) -> 
             )?;
 
             Ok(Response::new().add_message(burn_msg))
+        },
+
+        ExecuteMsg::Stake{
+        } => {
+
+            let paid_amount: Uint128 = must_pay(&info, &DENOM.load(deps.storage)?).map_err(|err| StdError::parse_err("payment error", err))?;
+
+            if paid_amount <= Uint128::zero(){
+                return Err(StdError::generic_err("Must send non-zero amount"))
+            }
+
+            let event = Event::new("stake")
+                .add_attribute("paid_amount", format!("{:?}", paid_amount));
+
+            Ok(Response::new().add_event(event))
+        },
+
+
+        ExecuteMsg::Unstake{
+            amount
+        } => {
+
+            let balance: BalanceResponse = deps.querier.query(&QueryRequest::Bank(BankQuery::Balance{
+                address: env.contract.address.to_string(),
+                denom: DENOM.load(deps.storage)?,
+            }))?;
+
+            if amount > balance.amount.amount {
+                return Err(StdError::generic_err(format!("Insufficient balance {:?} < {:?}", balance, amount)))
+            }
+
+            let unstake_msg: CosmosMsg = CosmosMsg::Bank(BankMsg::Send{
+                to_address: info.sender.to_string(),
+                amount: vec![
+                    Coin{
+                        denom: DENOM.load(deps.storage)?,
+                        amount: amount
+                    }
+                ]
+            });
+            
+            Ok(Response::new().add_message(unstake_msg))
         },
     }
 }

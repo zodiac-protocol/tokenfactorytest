@@ -26,6 +26,11 @@ pub enum ExecuteMsg {
     Burn{
         amount: Uint128,
     },
+    Stake{
+    },
+    Unstake{
+        amount: Uint128,
+    },
 }
 
 #[cw_serde]
